@@ -1,6 +1,9 @@
 from flask import Flask, request, render_template
 from handlers.UserHandler import UserHandler
+from handlers.DeptHandler import DeptHandler
 import json
+
+from utils.MyEncoder import MyEncoder
 
 app = Flask(__name__)
 
@@ -16,34 +19,47 @@ def default():
     return render_template('index.html')
 
 
-# 用户信息
-# 获取所有用户信息
-@app.route('/user/getuserlist', methods=['get', 'post'])
-def getUserList():
-    userHanler = UserHandler()
-    result = userHanler.getUserList()
-    print(result)
+@app.route('/getDepts', methods=['post'])
+def getDepts():
+    deptHandler = DeptHandler()
+    result = deptHandler.getDepts()
     result = json.dumps(result, ensure_ascii=False)
     print(result)
     return result
 
 
-# 新增用户
-@app.route('/user/adduser', methods=['post'])
-def addUser():
-    data = request.get_data()
-    userHanler = UserHandler()
-    result = userHanler.addUser(data)
+@app.route('/stepDepts', methods=['post'])
+def stepDepts():
+    deptHandler = DeptHandler()
+    result = deptHandler.getDepts()
+    list = []
+    for i in result:
+        if i['parentid'] is None:
+            dictdept = {'id': i['deptid'], 'label': i['deptname']}
+            list.append(dictdept)
+    for i in list:
+        childlist = []
+        for j in result:
+            if j['parentid'] == i['id']:
+                dictdept = {'id': j['deptid'], 'label': j['deptname']}
+                childlist.append(dictdept)
+        i['children'] = childlist
+    result = json.dumps(list, ensure_ascii=False)
     return result
 
 
-# 根据用户名查询
-@app.route('/user/getuser', methods=['post'])
-def getUserById():
+@app.route('/getUsersByDeptid', methods=['post'])
+def getUsersByDeptid():
     data = request.get_data()
+    dict_info = json.loads(data.decode("utf-8"))
+    deptid = dict_info['deptid']
     userHanler = UserHandler()
-    result = userHanler.getUserByName(data)
-    result = json.dumps(result, ensure_ascii=False)
+    result = userHanler.getUsersByDeptid(str(deptid))
+    print(type(result))
+    for i in result:
+        print(i)
+    result = json.dumps(result, cls=MyEncoder)
+    print("result=", result)
     return result
 
 

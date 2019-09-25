@@ -22,8 +22,8 @@ def download_allpicture(url, path):
         os.makedirs(path)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
-    #response = requests.get(url, headers=headers)
-    response = requests.get(url)
+    response = requests.get(url, headers=headers)
+    # response = requests.get(url)
     print(response.text)
     # 获取img标签数据
     page_image = re.compile('<img src=\"(.+?)\"')
@@ -32,8 +32,11 @@ def download_allpicture(url, path):
         pattern = re.compile(r'^https://.*.(jpg|png|gif|jpeg)$')
         if pattern.match(image):
             print(image)
-            image_path = path + "/" + url.split("/")[-1] + "/" + image.split("/")[-1]
-            with open(image_path, "wb") as f:
+            image_dir = path + "/" + url.split("/")[-1]
+            if not os.path.isdir(image_dir):
+                os.makedirs(image_dir)
+            image_dir = image_dir + "/" + image.split("/")[-1]
+            with open(image_dir, "wb") as f:
                 f.write(requests.get(image).content)
                 f.close()
 
@@ -45,4 +48,4 @@ def download_allpicture(url, path):
 
 # 通过requests包下载多张网络图片到本地
 if __name__ == "__main__":
-    download_allpicture("http://123456hao.com/html/article/index7063.html", "H:/照片/images/zhihu/request")
+    download_allpicture("https://www.zhihu.com/question/297715922/answer/512561486", "H:/images/zhihu/request")
