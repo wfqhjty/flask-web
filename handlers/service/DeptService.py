@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
 from handlers.dao.DeptDao import DeptDao
 
 

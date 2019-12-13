@@ -1,4 +1,5 @@
-import json
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
 
 from handlers.service.UserService import UserService
 

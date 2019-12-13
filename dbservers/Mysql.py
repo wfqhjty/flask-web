@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
 import pymysql
 
 # 设置连接数据库的配置，字符集 utf8mb4, 结果集"字典"DictCursor
