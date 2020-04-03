@@ -8,27 +8,26 @@ from utils.MyEncoder import MyEncoder
 app = Flask(__name__)
 
 
-@app.route('/index', methods=['get'])
+@app.route('/index', methods=['GET'])
 def index():
     print("/index")
     return render_template('index.html')
 
 
-@app.route('/', methods=['get'])
+@app.route('/', methods=['GET'])
 def default():
     return render_template('index.html')
 
 
-@app.route('/getDepts', methods=['post'])
+@app.route('/getDepts', methods=['POST'])
 def getDepts():
     deptHandler = DeptHandler()
     result = deptHandler.getDepts()
     result = json.dumps(result, ensure_ascii=False)
-    print(result)
     return result
 
 
-@app.route('/stepDepts', methods=['post'])
+@app.route('/stepDepts', methods=['POST'])
 def stepDepts():
     deptHandler = DeptHandler()
     result = deptHandler.getDepts()
@@ -48,20 +47,17 @@ def stepDepts():
     return result
 
 
-@app.route('/getUsersByDeptid', methods=['post'])
+@app.route('/getUsersByDeptid', methods=['POST'])
 def getUsersByDeptid():
-    data = request.get_data()
-    dict_info = json.loads(data.decode("utf-8"))
+    dict_info = request.get_json()
     deptid = dict_info['deptid']
     userHanler = UserHandler()
     result = userHanler.getUsersByDeptid(str(deptid))
-    print(type(result))
     for i in result:
         print(i)
     result = json.dumps(result, cls=MyEncoder)
-    print("result=", result)
     return result
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

@@ -52,4 +52,4 @@ def download_allpicture(url, path):
 
 # 通过requests包下载多张网络图片到本地
 if __name__ == "__main__":
-    download_allpicture("https://www.zhihu.com/question/297715922/answer/512561486", "H:/images/zhihu/request")
+    download_allpicture("https://www.zhihu.com/question/298912512", "H:/images/zhihu/request")
