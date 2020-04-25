@@ -10,7 +10,6 @@ app = Flask(__name__)
 
 @app.route('/index', methods=['GET'])
 def index():
-    print("/index")
     return render_template('index.html')
 
 
@@ -53,8 +52,6 @@ def getUsersByDeptid():
     deptid = dict_info['deptid']
     userHanler = UserHandler()
     result = userHanler.getUsersByDeptid(str(deptid))
-    for i in result:
-        print(i)
     result = json.dumps(result, cls=MyEncoder)
     return result
 
