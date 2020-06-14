@@ -10,7 +10,7 @@ class UserDao(object):
 
     def getUsersByDeptid(self, deptid):
         try:
-            sql = "select * from FrameUser where deptid='" + deptid + "'"
+            sql = "select * from frameuser where deptid='" + deptid + "'"
             return PySQL.get(sql)
         except Exception as e:
             print('ERROR {}'.format(e))
